@@ -13,6 +13,7 @@ int MaxStringSize = 100;
 
 int useless(char *str){
     int pause;
+    char *argument=malloc(MaxStringSize);
     char *command=malloc(MaxStringSize),*p;
     pid_t pid;	
     if((pid=fork())<0){
@@ -23,7 +24,8 @@ int useless(char *str){
     pause=strtol(str,&p,10);
     sleep(pause);
     strcpy(command,p+1);
-    if(execl(command, NULL)<0){
+    strcpy(argument, p+4);
+    if(execl(command, argument, NULL)<0){
         printf("Error - %d", errno);
         printf("%s%s%s\n","Program ",command," failed to load.");
         exit(0);
