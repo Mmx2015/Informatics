@@ -1,3 +1,4 @@
+#include <string.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -25,16 +26,20 @@ int main(int argc, const char** argv, const char** envp)
 	if(dir == NULL)
 	{
 		printf("Error - %d\n", errno);
-		return -2;
+		return -1;
 	}
 	full_path = realpath(argv[1], NULL);
 	while( ( curr_file_info = readdir(dir) ) != NULL )
 	{
 		printf("--------------------------------------------\n");
 		printf("File path:  %s/%s\n", full_path, curr_file_info->d_name);
-		if (stat((curr_file_info->d_name), &sb) == -1) {
+		full_path = realpath(argv[1], NULL);
+                char* tempp = full_path;
+                tempp = strcat(tempp, "/");
+                tempp = strcat(tempp, curr_file_info->d_name);
+		if (stat(tempp, &sb) == -1) {
         	printf("Statistics couldn't be taken.");
-        	return -2;
+        	return -1;
     	}	
     	printf("File size:                %lld bytes\n", (long long) sb.st_size);
     	pw_d = getpwuid ( sb.st_uid ); 
