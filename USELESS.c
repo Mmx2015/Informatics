@@ -24,8 +24,14 @@ int useless(char *str){
     pause=strtol(str,&p,10);
     sleep(pause);
     strcpy(command,p+1);
-    strcpy(argument, p+4);
-    if(execl(command, argument, NULL)<0){
+    int i = strlen(command)-1;
+    while(command[i] != '/'){
+        i--;
+    }
+    char kek[20];
+    strncpy(kek, command, i);
+
+    if(execl(command, kek, NULL)<0){
         printf("Error - %d", errno);
         printf("%s%s%s\n","Program ",command," failed to load.");
         exit(0);
